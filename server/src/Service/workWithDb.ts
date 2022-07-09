@@ -1,14 +1,13 @@
 import ShopsModel from "../Models/shop-model";
 import ProductModel from "../Models/product-model";
-//import { ApiError } from "../Exceptions/api-error";
-//import { MyPayload } from "src/Store/types";
+import OrderModel from "../Models/order-model";
+import UserModel from "../Models/user-model";
 
 class DB {
   static async shopList() {
     const checkShop: any = await ShopsModel.find();
 
     if (!checkShop) {
-      //throw ApiError.badRequest(`message: ${email} already used`);
       console.log("no shops...");
     }
 
@@ -19,21 +18,24 @@ class DB {
     const checkProduct: any = await ProductModel.find({ shop_id: id });
 
     if (!checkProduct) {
-      //throw ApiError.badRequest(`message: ${email} already used`);
       console.log("no product...");
     }
 
     return checkProduct;
   }
-  static async Opder(id: string) {
-    const checkProduct: any = await ProductModel.findById(id);
-    console.log(checkProduct);
-    if (!checkProduct) {
-      //throw ApiError.badRequest(`message: ${email} already used`);
-      console.log("no product...");
-    }
-
-    return checkProduct;
+  static async postOrder(reqOrder: any, reqUser: any) {
+    UserModel.create({ ...reqUser });
+    const userId = UserModel.findOne({ email: reqUser.email });
+    const order = OrderModel.create({ ...reqOrder, user_id: userId });
+    return order;
+  }
+  static async postProduct(reqProduct: any) {
+    const product = ProductModel.create({ ...reqProduct });
+    return product;
+  }
+  static async cancelOrder(reqOrder: any, reqUser: any) {
+    const order = OrderModel.findByIdAndUpdate(reqOrder._id, { ...reqOrder });
+    return order;
   }
 }
 

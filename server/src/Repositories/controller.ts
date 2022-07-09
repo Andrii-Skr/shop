@@ -19,10 +19,11 @@ class Controller {
   }
   static async postOrder(req: Request, res: Response) {
     try {
-      const { id } = req.params;
-      const product = await await BD.productList(id);
-      return res.json({ productList: product });
-    } catch (error) {}
+      await BD.postOrder(req.body.order, req.body.user);
+      return res.json({ message: "Done" });
+    } catch (error) {
+      console.log(error, "postorder");
+    }
   }
   static async user(req: Request, res: Response) {
     try {
@@ -34,7 +35,18 @@ class Controller {
   }
   static async cancelOrder(req: Request, res: Response) {
     try {
+      await BD.cancelOrder(req.body.order, req.body.user);
+      return res.json({ message: "Done" });
     } catch (error) {}
+  }
+  static async postProductPriceList(req: Request, res: Response) {
+    try {
+      console.log(req.body);
+      await BD.postProduct(req.body);
+      return res.json({ message: "Done" });
+    } catch (error) {
+      console.log(error, "postProduct");
+    }
   }
 }
 

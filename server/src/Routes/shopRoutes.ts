@@ -5,9 +5,10 @@ const shopRoutes: Router = express.Router();
 
 shopRoutes.get("/", controller.shopList);
 shopRoutes.get("/:id", controller.productPriceList);
+shopRoutes.post("/:id", controller.postProductPriceList);
 shopRoutes.post("/shoppingCart", controller.postOrder);
-shopRoutes.post("/shoppingCart", controller.user);
+//shopRoutes.post("/shoppingCart", controller.user);
 shopRoutes.get("/history", controller.getOrder);
-shopRoutes.post("/history", controller.cancelOrder);
+shopRoutes.post("/history/:id", controller.cancelOrder);
 
 export default shopRoutes;
